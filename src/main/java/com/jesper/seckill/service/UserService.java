@@ -80,9 +80,9 @@ public class UserService {
         }
         //验证密码
         String dbPass = user.getPassword();
-        String saltDB = user.getSalt();
-        String calcPass = MD5Util.formPassToDBPass(formPass, saltDB);
-        if (!calcPass.equals(dbPass)) {
+//        String saltDB = user.getSalt();
+//        String calcPass = MD5Util.formPassToDBPass(formPass, saltDB);
+        if (!formPass.equals(dbPass)) {
             throw new GlobalException(CodeMsg.PASSWORD_ERROR);
         }
         //生成唯一id作为token
