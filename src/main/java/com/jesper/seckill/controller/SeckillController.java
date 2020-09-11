@@ -1,6 +1,7 @@
 package com.jesper.seckill.controller;
 
 import com.google.common.util.concurrent.RateLimiter;
+import com.jesper.seckill.bean.ApointmentDTO;
 import com.jesper.seckill.bean.SeckillOrder;
 import com.jesper.seckill.bean.User;
 import com.jesper.seckill.rabbitmq.MQSender;
@@ -17,10 +18,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -72,6 +70,11 @@ public class SeckillController implements InitializingBean {
 
         if (!rateLimiter.tryAcquire(1000, TimeUnit.MILLISECONDS)) {
             return  Result.error(CodeMsg.ACCESS_LIMIT_REACHED);
+        }
+
+        //校验是否有秒杀资格
+        if(!redisService.exists(GoodsKey.apointment, String.valueOf(goodsId) + user.getId())){
+            return  Result.error(CodeMsg.NO_APOINTMENT);
         }
 
         if (user == null) {
@@ -137,5 +140,32 @@ public class SeckillController implements InitializingBean {
         }
         long orderId = seckillService.getSeckillResult(user.getId(), goodsId);
         return Result.success(orderId);
+    }
+
+    /**
+     * 预约
+     * @param apointmentDTO
+     * @return
+     */
+    @RequestMapping(value = "/apointment" , method = RequestMethod.GET)
+    @ResponseBody
+    public Result<Object> apointment(ApointmentDTO apointmentDTO){
+        Long goodsId = apointmentDTO.getGoodsId();
+        Long mobile = apointmentDTO.getMobile();
+        Thread thread=new Thread(new Runnable() { //异步预约
+            @Override
+            public void run() {
+                System.out.println("===apointment start===");
+                redisService.set(GoodsKey.apointment , String.valueOf(goodsId) + mobile , mobile);
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("===task finish===");
+            }
+        });
+        thread.start();
+        return Result.success(null);
     }
 }

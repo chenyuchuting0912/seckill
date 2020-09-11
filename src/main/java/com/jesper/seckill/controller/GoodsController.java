@@ -27,7 +27,7 @@ import java.util.List;
  * Created by jiangyunxiong on 2018/5/22.
  */
 @Controller
-@RequestMapping("/goods")
+@RequestMapping("/promos")
 public class GoodsController {
 
     @Autowired
@@ -50,7 +50,7 @@ public class GoodsController {
      * QPS:433
      * 1000 * 10
      */
-    @RequestMapping(value = "/to_list", produces = "text/html")
+    @RequestMapping(value = "/list", produces = "text/html")
     @ResponseBody
     public String list(HttpServletRequest request, HttpServletResponse response, Model model, User user) {
 
