@@ -2,6 +2,7 @@ package com.jesper.seckill.service;
 
 import com.alibaba.druid.util.StringUtils;
 import com.jesper.seckill.bean.User;
+import com.jesper.seckill.bean.UserVo;
 import com.jesper.seckill.exception.GlobalException;
 import com.jesper.seckill.mapper.UserMapper;
 import com.jesper.seckill.redis.RedisService;
@@ -66,7 +67,7 @@ public class UserService {
         return true;
     }
 
-    public String login(HttpServletResponse response, LoginVo loginVo) {
+    public UserVo login(HttpServletResponse response, LoginVo loginVo) {
         if (loginVo == null) {
             throw new GlobalException(CodeMsg.SERVER_ERROR);
         }
@@ -87,7 +88,11 @@ public class UserService {
         //生成唯一id作为token
         String token = UUIDUtil.uuid();
         addCookie(response, token, user);
-        return token;
+        UserVo userVo = new UserVo();
+        userVo.setUserId(user.getId());
+        userVo.setUsername(user.getNickname());
+        userVo.setAccessToken(token);
+        return userVo;
     }
 
     /**
