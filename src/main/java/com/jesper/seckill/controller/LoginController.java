@@ -33,7 +33,7 @@ public class LoginController {
         return "login";
     }
 
-    @RequestMapping("/do_login")
+    @RequestMapping("/")
     @ResponseBody
     public Result<UserVo> doLogin(HttpServletResponse response, @Valid LoginVo loginVo) {//加入JSR303参数校验
         log.info(loginVo.toString());
