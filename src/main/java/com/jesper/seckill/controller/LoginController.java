@@ -1,6 +1,7 @@
 package com.jesper.seckill.controller;
 
 import com.jesper.seckill.bean.UserVo;
+import com.jesper.seckill.result.CodeMsg;
 import com.jesper.seckill.result.Result;
 import com.jesper.seckill.service.UserService;
 import com.jesper.seckill.vo.LoginVo;
@@ -38,7 +39,7 @@ public class LoginController {
     public Result<UserVo> doLogin(HttpServletResponse response, @Valid LoginVo loginVo) {//加入JSR303参数校验
         log.info(loginVo.toString());
         UserVo userVo = userService.login(response, loginVo);
-        return Result.success(userVo);
+        return Result.success(CodeMsg.SUCCESS,userVo);
     }
 
 }

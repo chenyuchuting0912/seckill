@@ -1,5 +1,7 @@
 package com.jesper.seckill.result;
 
+import com.sun.org.apache.bcel.internal.classfile.Code;
+
 public class Result<T> {
 	
 	private int code;
@@ -11,6 +13,16 @@ public class Result<T> {
 	 * */
 	public static  <T> Result<T> success(T data){
 		return new Result<T>(data);
+	}
+
+	public static  <T> Result<T> success(CodeMsg codeMsg , T data){
+		return new Result<T>(codeMsg,data);
+	}
+
+	private Result(CodeMsg codeMsg , T data) {
+		this.code = codeMsg.getCode();
+		this.msg = codeMsg.getMsg();
+		this.data = data;
 	}
 	
 	/**
@@ -24,7 +36,7 @@ public class Result<T> {
 		this.data = data;
 	}
 	
-	private Result(int code, String msg) {
+	private Result(int code, String msg ) {
 		this.code = code;
 		this.msg = msg;
 	}
