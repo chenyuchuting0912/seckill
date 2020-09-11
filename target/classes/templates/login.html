@@ -20,46 +20,119 @@
     <script type="text/javascript" th:src="@{/js/common.js}"></script>
 
 </head>
+<style htype='text-css'>
+    #herder {
+        width: 76%;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: row;
+        align-items:flex-end;
+    }
+    #logo {
+        position: relative;
+        width: 200px;
+        margin: 10px 0;
+        height: 60px;
+        float: left;
+    }
+    #logo-span{
+        height: 40px;
+        font-size:23px;
+        margin-left: 10px;
+        margin: 10px 0;
+        line-height: 40px;
+    }
+    #content-bg{
+        position: absolute;
+        left: 0;
+        top: 80px;
+        width: 100%;
+        height: 475px;
+        background: #e93854;
+    }
+    #content{
+        width: 76%;
+        margin: 0 auto;
+    }
+    .img-show{
+        width:100%;
+        display: inline-block;
+        background: url(../static/img/content-bg.png) 0px 0px no-repeat;
+        background-color: #e93854;
+        padding: 20px 0;
+    }
+    #loginForm{
+        background-color: #fff;
+        width:40%;
+        display: inline-block;
+        margin-left: 60%;
+        padding: 50px 20px;
+    }
+    #mobile,#password{
+        width:220px;
+    }
+    #btn-login{
+        width: 90%;
+        margin: 20px auto;
+    }
+    #reset-div{
+        width: 90%;
+        margin: 0px auto;
+        text-align: right;
+    }
+</style>
 <body>
 
-<form name="loginForm" id="loginForm" method="post" style="width:50%; margin:0 auto">
-
-    <h2 style="text-align:center; margin-bottom: 20px">用户登录</h2>
-
-    <div class="form-group">
-        <div class="row">
-            <label class="form-label col-md-4">请输入手机号码</label>
-            <div class="col-md-5">
-                <input id="mobile" name="mobile" class="form-control" type="text" placeholder="手机号码" required="true"
-                       minlength="11" maxlength="11"/>
-            </div>
-            <div class="col-md-1">
-            </div>
-        </div>
+<div id="herder">
+    <div id="logo">
+        <img src="../static/img/logo.png" alt="京东" width="170" height="60">
     </div>
+    <div id='logo-span'>欢迎登录</div>
+</div>
 
-    <div class="form-group">
-        <div class="row">
-            <label class="form-label col-md-4">请输入密码</label>
-            <div class="col-md-5">
-                <input id="password" name="password" class="form-control" type="password" placeholder="密码"
-                       required="true" minlength="6" maxlength="16"/>
-            </div>
-        </div>
-    </div>
+<div id='content-bg'>
+    <div id='content'>
+        <div class='img-show'>
+            <form name="loginForm" id="loginForm" method="post">
+                <h2 style="text-align:center; margin-bottom: 40px">用户登录</h2>
+                <div class="form-group">
+                    <div class="row">
+                        <label class="form-label col-md-4">请输入手机号码</label>
+                        <div class="col-md-5">
+                            <input id="mobile" name="mobile" class="form-control" type="text" placeholder="手机号码" required="true"
+                                   minlength="11" maxlength="11"/>
+                        </div>
+                        <div class="col-md-1">
+                        </div>
+                    </div>
+                </div>
 
-    <div class="row">
-        <div class="col-md-5">
-            <button class="btn btn-primary btn-block" type="reset" onclick="reset()">重置</button>
+                <div class="form-group">
+                    <div class="row">
+                        <label class="form-label col-md-4">请输入密码</label>
+                        <div class="col-md-5">
+                            <input id="password" name="password" class="form-control" type="password" placeholder="密码"
+                                   required="true" minlength="6" maxlength="16"/>
+                        </div>
+                    </div>
+                </div>
+                <button id='btn-login' class="btn btn-primary btn-block" type="submit" onclick="login()" style="background-color: #e93854;border-color: #e93854;">登录</button>
+                <div id='reset-div'>
+                    <a id='reset' type="reset" onclick="reset()">重置</a>
+                </div>
+            </form>
         </div>
-        <div class="col-md-5">
-            <button class="btn btn-primary btn-block" type="submit" onclick="login()">登录</button>
-        </div>
+
     </div>
+</div>
 
 </form>
 </body>
 <script>
+    // function reset(){
+    //     $("#password").val('');
+    //     $("#mobile").val('');
+    // }
     function login() {
         $("#loginForm").validate({
             submitHandler: function (form) {
